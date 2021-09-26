@@ -1,23 +1,23 @@
 import os
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image as img
 from keras.preprocessing.image import img_to_array
-from keras import backend as k
+# from keras import backend as k
 import numpy as np
-import tensorflow as tf
-from PIL import Image
-from keras.applications.resnet50 import ResNet50,decode_predictions,preprocess_input
-from tensorflow import glorot_uniform_initializer
+# import tensorflow as tf
+# from PIL import Image
+from keras.applications.mobilenet import MobileNet,decode_predictions,preprocess_input
+# from tensorflow import glorot_uniform_initializer
 from datetime import datetime
-import io
+# import io
 from flask import Flask,Blueprint,request,render_template,jsonify
 from modules.dataBase import collection as db
 
 
 mod = Blueprint('backend',__name__,template_folder='templates',static_folder='./static')
 UPLOAD_URL = 'http://192.168.1.103:5000/static/'
-model = ResNet50(weights='imagenet')
-model._make_predict_function()
+model = MobileNet(weights='imagenet')
+model.make_predict_function()
 
 
 @mod.route('/')
