@@ -1,12 +1,11 @@
 import os
 import tensorflow as tf
 from keras.models import load_model
-from tensorflow.keras.preprocessing import image as img
-from keras.preprocessing.image import img_to_array
 import numpy as np
 from datetime import datetime
 from flask import Blueprint, request, render_template, jsonify
 from modules.dataBase import collection as db
+import cv2
 
 mod = Blueprint('backend', __name__, template_folder='templates', static_folder='./static')
 UPLOAD_URL = 'http://192.168.1.103:5000/static/'
@@ -35,15 +34,33 @@ def predict():
             path = os.path.join(os.getcwd() + '\\modules\\static\\' + user_file.filename)
             user_file.save(path)
 
-            image = img.load_img(path, target_size=(224, 224))
-            img_array = img_to_array(image)
-            img_array = np.expand_dims(img_array, axis=0)
-            predictions = model.predict(img_array)
+            image = cv2.resize(cv2.imread(path), (224, 224))
+            # Use gaussian blur
+            blurImg = cv2.GaussianBlur(image, (5, 5), 0)
+
+            # Convert to HSV image
+            hsvImg = cv2.cvtColor(blurImg, cv2.COLOR_BGR2HSV)
+
+            # Create mask (parameters - green color range)
+            lower_green = (25, 40, 50)
+            upper_green = (75, 255, 255)
+            mask = cv2.inRange(hsvImg, lower_green, upper_green)
+            kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
+            mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+
+            # Create bool mask
+            bMask = mask > 0
+
+            # Apply the mask
+            clear = np.zeros_like(image, np.uint8)  # Create empty image
+            clear[bMask] = image[bMask]  # Apply boolean mask to the origin image
+            clearTestImg = clear / 255
+            clearTestImg = tf.expand_dims(clearTestImg, 0)
+            predictions = model.predict(clearTestImg)
             score = tf.nn.softmax(predictions)
 
             class_name = class_names[np.argmax(score)]
             score = np.max(score)
-
 
             db.addNewImage(
                 user_file.filename,
@@ -58,7 +75,6 @@ def predict():
                 "score": str(score),
                 "upload_time": datetime.now()
             })
-
 
 # def identifyImage(img_path):
 #     image = img.load_img(img_path, target_size=(224, 224))
