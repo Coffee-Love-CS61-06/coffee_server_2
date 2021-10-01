@@ -4,7 +4,7 @@ from keras.preprocessing.image import img_to_array
 import numpy as np
 from keras.applications.mobilenet import MobileNet, decode_predictions, preprocess_input
 from datetime import datetime
-from flask import Flask, Blueprint, request, render_template, jsonify
+from flask import Blueprint, request, render_template, jsonify
 from modules.dataBase import collection as db
 
 mod = Blueprint('backend', __name__, template_folder='templates', static_folder='./static')
@@ -53,7 +53,6 @@ def identifyImage(img_path):
     image = img.load_img(img_path, target_size=(224, 224))
     x = img_to_array(image)
     x = np.expand_dims(x, axis=0)
-    # images = np.vstack([x])
     x = preprocess_input(x)
     preds = model.predict(x)
     preds = decode_predictions(preds, top=1)
