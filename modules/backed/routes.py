@@ -39,8 +39,8 @@ def predict():
             img_array = img_to_array(image)
             img_array = np.expand_dims(img_array, axis=0)
             predictions = model.predict(img_array)
-            score = tf.nn.softmax(predictions[0])
-            
+            score = tf.nn.softmax(predictions)
+
             class_name = class_names[np.argmax(score)]
             score = np.max(score)
 
