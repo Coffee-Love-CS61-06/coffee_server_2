@@ -50,6 +50,7 @@ def predict():
 
 
 def identifyImage(img_path):
+    img
     image = img.load_img(img_path, target_size=(224, 224))
     x = img_to_array(image)
     x = np.expand_dims(x, axis=0)
