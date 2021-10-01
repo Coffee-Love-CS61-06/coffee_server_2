@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-from bson import ObjectId 
 
 client = MongoClient("mongodb://localhost:27017") #host uri  
 db = client.image_predition #Select the database  
