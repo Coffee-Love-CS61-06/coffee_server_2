@@ -60,19 +60,19 @@ def predict():
             score = tf.nn.softmax(predictions)
 
             class_name = class_names[np.argmax(score)]
-            score = np.max(score)
+            score = np.max(score) * 100
 
             db.addNewImage(
                 user_file.filename,
                 class_name,
-                str(score),
+                str(round(score, 2)),
                 datetime.now(),
                 UPLOAD_URL + user_file.filename)
 
             return jsonify({
                 "status": "success",
                 "class": class_name,
-                "score": str(score),
+                "score": str(round(score, 2)),
                 "upload_time": datetime.now()
             })
 
