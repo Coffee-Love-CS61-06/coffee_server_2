@@ -5,4 +5,4 @@ model = load_model("modules/model/mobilenet_model.hdf5")
 print("model loading .... plaese wait this might take a while")
 
 if __name__ == "__main__":
-    app.run(debug=False, host='192.168.1.103', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
