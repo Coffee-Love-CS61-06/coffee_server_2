@@ -1,6 +1,8 @@
 from pymongo import MongoClient
+import certifi
 
-client = MongoClient("mongodb://localhost:27017") #host uri  
+client = MongoClient("mongodb+srv://ttp_coffee_love:9mj2tcB0xhrzxPuV@cluster0.vpotj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+                     tlsCAFile=certifi.where()) #host uri
 db = client.image_predition #Select the database  
 image_details = db.imageData
 
