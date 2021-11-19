@@ -8,7 +8,7 @@ from modules.dataBase import collection as db
 import cv2
 
 mod = Blueprint('backend', __name__, template_folder='templates', static_folder='./static')
-UPLOAD_URL = 'http://0.0.0.0:5000/static/'
+UPLOAD_URL = 'http://0.0.0.0:8400/static/'
 model = load_model("modules/model/mobilenet_model.hdf5")
 class_names = ['Dark', 'Green', 'Light', 'Medium']
 model.make_predict_function()
