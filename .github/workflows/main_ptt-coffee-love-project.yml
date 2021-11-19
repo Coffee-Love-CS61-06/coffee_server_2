@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'ptt-coffee-love-project'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_45910078F123429F9974AFB66F9C9550 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3F0CF28680AA409BBB2C9B348352D0E3 }}
